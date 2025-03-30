@@ -27,4 +27,3 @@ local targetMeshIds = {
      end
      task.wait(1) -- Задержка в 1 секунду перед следующим циклом
  end
-wait(1)
