@@ -1,0 +1,313 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local Window = Rayfield:CreateWindow({
+   Name = "Sanya Hub",
+   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   LoadingTitle = "Sanya Hub",
+   LoadingSubtitle = "by titela42",
+   Theme = "Ocean", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+
+   DisableRayfieldPrompts = false,
+   DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
+
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = SanyaHub, -- Create a custom folder for your hub/game
+      FileName = "Hub"
+   },
+
+   Discord = {
+      Enabled = false, -- Prompt the user to join your Discord server if their executor supports it
+      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+
+   KeySystem = false, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Untitled",
+      Subtitle = "Key System",
+      Note = "No method of obtaining the key is provided", -- Use this to tell the user how to get a key
+      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
+
+local Tab = Window:CreateTab("Home", 4483362458) -- Title, Image
+local Section = Tab:CreateSection("idk")
+
+local Divider = Tab:CreateDivider()
+
+local Button = Tab:CreateButton({
+   Name = "Destroy Gui",
+   Callback = function()
+Rayfield:Destroy()
+   end,
+})
+
+local Section = Tab:CreateSection("AutoCraft")
+
+local toggles = {}
+
+local function createAutoCraftToggle(name, flag, id, amount)
+    toggles[flag] = false
+
+    return Tab:CreateToggle({
+        Name = name,
+        CurrentValue = false,
+        Flag = flag,
+        Callback = function(Value)
+            toggles[flag] = Value
+
+            if Value then
+                task.spawn(function()
+                    while toggles[flag] do
+                        local args = {
+                            [1] = "MiningCraftMachine",
+                            [2] = id,
+                            [3] = amount,
+                            [4] = { ["shiny"] = false, ["pt"] = 0 }
+                        }
+
+                        game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("PetCraftingMachine_Craft"):InvokeServer(unpack(args))
+                        task.wait(0.5)
+                    end
+                end)
+            end
+        end,
+    })
+end
+
+createAutoCraftToggle("Ruby", "Toggle1", 1, 100)
+createAutoCraftToggle("Emerald", "Toggle2", 2, 100)
+createAutoCraftToggle("Amethyst", "Toggle3", 3, 100)
+createAutoCraftToggle("Rainbow", "Toggle4", 4, 100)
+createAutoCraftToggle("Quartz", "Toggle5", 5, 100)
+createAutoCraftToggle("Topaz", "Toggle6", 6, 100)
+createAutoCraftToggle("Onyx", "Toggle7", 7, 100)
+createAutoCraftToggle("Huge Monkey", "Toggle8", 8, 1)
+
+local Section = Tab:CreateSection("Xray")
+
+local Toggle = Tab:CreateToggle({
+    Name = "Xray",
+    CurrentValue = false,
+    Flag = "flag",
+    Callback = function(Value)
+        local blockNumbers = {1, 2, 3, 4, 5, 6, 7, 8}
+        
+        for _, blockNumber in ipairs(blockNumbers) do
+            -- Проверяем, существует ли объект с таким именем в папке
+            local folder = workspace.__THINGS.BlockWorlds:FindFirstChild("Blocks_" .. blockNumber)
+            if folder then  -- Только если folder существует
+                local targetMeshIds = {
+                    "rbxassetid://108190463667826",
+                    "rbxassetid://108190463667826",
+                    "rbxassetid://110373471085083",
+                    "rbxassetid://103544790460474",
+                    "rbxassetid://96246511698009",
+                    "rbxassetid://108190463667826",
+                    "rbxassetid://80823997843474",
+                    "rbxassetid://85149779982216",
+                    "rbxassetid://92644618517298",
+                    "rbxassetid://85878564976774",
+                    "rbxassetid://85878564976774",
+                    ""
+                }
+
+                                for _, part in ipairs(folder:GetChildren()) do
+                -- Проверяем, является ли объект MeshPart
+                if part:IsA("MeshPart") then
+                    -- Проверяем, что MeshId объекта совпадает с одним из указанных
+                    for _, meshId in ipairs(targetMeshIds) do
+                        if part.MeshId == meshId then
+                            -- Устанавливаем прозрачность на 75%
+                            part.Transparency = 1
+                            part.CanCollide = true  -- Отключаем столкновение, чтобы не блокировать движение
+                            break
+                            end
+                        end
+                    end
+                end
+                wait(0.75)  -- Задержка в 0.75 секунды
+            else
+                warn("Folder Blocks_" .. blockNumber .. " не найден в workspace.__THINGS.BlockWorlds")
+            end
+        end
+
+        -- Запуск функции при включении Toggle
+        if Value then
+            spawn(xrayFunction)
+        end
+    end,
+})
+
+local Toggle = Tab:CreateToggle({
+    Name = "Xray for Sapphires",
+    CurrentValue = false,
+    Flag = "flag2",
+    Callback = function(Value)
+        local blockNumbers = {1, 2, 3, 4, 5, 6 ,7 ,8}
+        
+        for _, blockNumber in ipairs(blockNumbers) do
+            -- Проверяем существование папки
+            local folder = workspace.__THINGS.BlockWorlds:FindFirstChild("Blocks_" .. blockNumber)
+            if folder then
+                local targetMeshIds = {
+                    "rbxassetid://76036505993454"
+                }
+
+                for _, part in ipairs(folder:GetChildren()) do
+                    if part:IsA("MeshPart") then
+                        for _, meshId in ipairs(targetMeshIds) do
+                            if part.MeshId == meshId then
+                                part.Transparency = 0.75  -- Устанавливаем прозрачность на 75%
+                                break
+                            end
+                        end
+                    end
+                end
+            else
+                warn("Folder Blocks_" .. blockNumber .. " не найден в workspace.__THINGS.BlockWorlds")
+            end
+        end
+    end,
+})
+
+local Toggle = Tab:CreateToggle({
+    Name = "Deletes Blocks",
+    CurrentValue = false,
+    Flag = "flag3",
+    Callback = function(Value)
+        local blockNumbers = {1, 2, 3, 4, 5, 6, 7, 8}
+        local deleteThreads = {}  -- Хранение потоков для блокировки
+
+        for _, blockNumber in ipairs(blockNumbers) do
+            -- Проверяем существование папки
+            local folder = workspace.__THINGS.BlockWorlds:FindFirstChild("Blocks_" .. blockNumber)
+            if folder then
+                local targetMeshIds = {
+                    "rbxassetid://108190463667826",
+                    "rbxassetid://108190463667826",
+                    "rbxassetid://110373471085083",
+                    "rbxassetid://103544790460474",
+                    "rbxassetid://96246511698009",
+                    "rbxassetid://108190463667826",
+                    "rbxassetid://80823997843474",
+                    "rbxassetid://85149779982216",
+                    "rbxassetid://92644618517298",
+                    "rbxassetid://85878564976774"
+                }
+
+                -- Функция для удаления блоков
+                local function deleteBlocksFunction()
+                    while true do
+                        for _, part in ipairs(folder:GetChildren()) do
+                            if part:IsA("MeshPart") then
+                                for _, meshId in ipairs(targetMeshIds) do
+                                    if part.MeshId == meshId then
+                                        part:Destroy()  -- Удаляем блок
+                                        break
+                                    end
+                                end
+                            end
+                        end
+                        wait(0.75)  -- Задержка в 0.75 секунды
+                    end
+                end
+
+                -- Запуск функции при включении Toggle
+                if Value then
+                    -- Создаем новый поток и сохраняем его в таблицу
+                    deleteThreads[blockNumber] = spawn(deleteBlocksFunction)
+                else
+                    -- Останавливаем все потоки при выключении Toggle
+                    if deleteThreads[blockNumber] then
+                        deleteThreads[blockNumber] = nil
+                    end
+                end
+            else
+                warn("Folder Blocks_" .. blockNumber .. " не найден в workspace.__THINGS.BlockWorlds")
+            end
+        end
+    end,
+})
+
+local Button1 = Tab:CreateButton({
+    Name = "Make Blocks Visible",
+    Callback = function()
+        local blockNumbers = {1, 2, 3, 4, 5, 6, 7, 8}
+        
+        for _, blockNumber in ipairs(blockNumbers) do
+            -- Проверяем существование папки
+            local folder = workspace.__THINGS.BlockWorlds:FindFirstChild("Blocks_" .. blockNumber)
+            if folder then
+                local targetMeshIds = {
+                    "rbxassetid://108190463667826",
+                    "rbxassetid://108190463667826",
+                    "rbxassetid://110373471085083",
+                    "rbxassetid://103544790460474",
+                    "rbxassetid://96246511698009",
+                    "rbxassetid://108190463667826",
+                    "rbxassetid://80823997843474",
+                    "rbxassetid://85149779982216",
+                    "rbxassetid://92644618517298",
+                    "rbxassetid://85878564976774",
+                    "rbxassetid://85878564976774"
+                }
+
+                for _, part in ipairs(folder:GetChildren()) do
+                    -- Проверяем, является ли объект MeshPart
+                    if part:IsA("MeshPart") then
+                        -- Проверяем, что MeshId объекта совпадает с одним из указанных
+                        for _, meshId in ipairs(targetMeshIds) do
+                            if part.MeshId == meshId then
+                                -- Устанавливаем прозрачность на 0 (полностью видимый)
+                                part.Transparency = 0
+                                break
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+})
+
+local Button2 = Tab:CreateButton({
+    Name = "Makes Sapphires Visible",
+    Callback = function()
+        local blockNumbers = {1, 2, 3, 4, 5, 6, 7, 8}
+        
+        for _, blockNumber in ipairs(blockNumbers) do
+            -- Проверяем существование папки
+            local folder = workspace.__THINGS.BlockWorlds:FindFirstChild("Blocks_" .. blockNumber)
+            if folder then
+                local targetMeshIds = {
+                    "rbxassetid://76036505993454"
+                }
+
+                for _, part in ipairs(folder:GetChildren()) do
+                    -- Проверяем, является ли объект MeshPart
+                    if part:IsA("MeshPart") then
+                        -- Проверяем, что MeshId объекта совпадает с одним из указанных
+                        for _, meshId in ipairs(targetMeshIds) do
+                            if part.MeshId == meshId then
+                                -- Устанавливаем прозрачность на 0 (полностью видимый)
+                                part.Transparency = 0
+                                break
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+})
+
+local Button3 = Tab:CreateButton({
+   Name = "Fly and Etc",
+   Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/San1na/Soso/refs/heads/main/Pasha_Gandon"))()
+   end,
+})
