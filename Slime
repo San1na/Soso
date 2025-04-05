@@ -67,17 +67,17 @@ end
 function startProcess()
     while true do
         if stopProcess then return end
-        teleport(-24613, 415, 13115)
+        teleport(-24612, 415, -1448)
         wait(1)
         pressE()
         wait(1)
 
-        teleport(-24612, 415, 12987)
+        teleport(-24614, 415, -1576)
         wait(1)
         pressE()
         wait(1)
 
-        teleport(-24543, 407, 13053)
+        teleport(-24540, 407, -1511)
         countdown(120) -- ждать 2 минуты с таймером
     end
 end
