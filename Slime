@@ -1,0 +1,107 @@
+local Players = game:GetService("Players")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local player = Players.LocalPlayer
+
+-- Создание GUI
+local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+screenGui.Name = "TeleportTimerGui"
+
+local timerLabel = Instance.new("TextLabel", screenGui)
+timerLabel.Size = UDim2.new(0, 200, 0, 40)
+timerLabel.Position = UDim2.new(0.5, -100, 0, 10)
+timerLabel.BackgroundTransparency = 0.5
+timerLabel.BackgroundColor3 = Color3.new(0, 0, 0)
+timerLabel.TextColor3 = Color3.new(1, 1, 1)
+timerLabel.Font = Enum.Font.SourceSansBold
+timerLabel.TextSize = 16
+timerLabel.Text = "Ожидание..."
+
+-- Кнопка для начала или перезапуска процесса
+local startButton = Instance.new("TextButton", screenGui)
+startButton.Size = UDim2.new(0, 200, 0, 40)
+startButton.Position = UDim2.new(0.5, -100, 0, 60)
+startButton.BackgroundTransparency = 0.5
+startButton.BackgroundColor3 = Color3.new(0, 1, 0)
+startButton.TextColor3 = Color3.new(1, 1, 1)
+startButton.Font = Enum.Font.SourceSansBold
+startButton.TextSize = 16
+startButton.Text = "Начать / Перезапустить"
+
+-- Кнопка для паузы процесса
+local pauseButton = Instance.new("TextButton", screenGui)
+pauseButton.Size = UDim2.new(0, 200, 0, 40)
+pauseButton.Position = UDim2.new(0.5, -100, 0, 110)
+pauseButton.BackgroundTransparency = 0.5
+pauseButton.BackgroundColor3 = Color3.new(1, 0, 0)
+pauseButton.TextColor3 = Color3.new(1, 1, 1)
+pauseButton.Font = Enum.Font.SourceSansBold
+pauseButton.TextSize = 16
+pauseButton.Text = "Пауза"
+
+local stopProcess = false
+local paused = false
+
+-- Телепорт
+function teleport(x, y, z)
+    player.Character:MoveTo(Vector3.new(x, y, z))
+end
+
+-- Нажатие E
+function pressE()
+    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+    wait(0.1)
+    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+end
+
+-- Таймер обратного отсчёта
+function countdown(seconds)
+    for i = seconds, 1, -1 do
+        if stopProcess then return end
+        timerLabel.Text = "Жди блять: " .. i .. " сек"
+        wait(1)
+    end
+    timerLabel.Text = "Выполняю..."
+end
+
+-- Основной цикл
+function startProcess()
+    while true do
+        if stopProcess then return end
+        teleport(-24613, 415, 13115)
+        wait(1)
+        pressE()
+        wait(1)
+
+        teleport(-24612, 415, 12987)
+        wait(1)
+        pressE()
+        wait(1)
+
+        teleport(-24543, 407, 13053)
+        countdown(120) -- ждать 2 минуты с таймером
+    end
+end
+
+-- Обработчик для кнопки начала или перезапуска процесса
+startButton.MouseButton1Click:Connect(function()
+    stopProcess = false
+    paused = false
+    timerLabel.Text = "Ожидание..."
+    startProcess() -- Запуск процесса
+end)
+
+-- Обработчик для кнопки паузы
+pauseButton.MouseButton1Click:Connect(function()
+    if not paused then
+        stopProcess = true
+        paused = true
+        timerLabel.Text = "На паузе..."
+    else
+        stopProcess = false
+        paused = false
+        timerLabel.Text = "Возобновлено!"
+        wait(1)
+        timerLabel.Text = "Ожидание..."
+        startProcess() -- Возобновление процесса
+    end
+end)
