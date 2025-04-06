@@ -164,8 +164,10 @@ local function StartSelling()
     while selling do
         for class, items in pairs(Savemod.Get().Inventory) do
             for uuid, item in pairs(items) do
-                if item.id == itemId and item.pt == (rainbow and 2 or golden and 1 or 0)
-                and (item.sh or false) == shiny then
+                -- Измененное условие, чтобы продавать обычных питомцев, если флаги не включены
+                if item.id == itemId and
+                   (not rainbow and not golden and not shiny or 
+                    (item.pt == (rainbow and 2 or golden and 1 or 0)) and (item.sh == shiny)) then
                     local rap = GetRap(class, item)
                     local price = ConvertPrice(priceInput, rap)
                     local maxAmount = math.min(item._am or 1, 15000, math.floor(25e9 / price))
