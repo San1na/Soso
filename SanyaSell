@@ -129,8 +129,8 @@ local function ConvertPrice(Price, Rap)
             return (Percentage / 100) * Rap
         end
 
-        -- Handle shorthand notations like "1k", "1m", "1b"
-        local number, suffix = Price:match("^(%d+)([kKmMbB]?)$")
+        -- Handle shorthand notations like "1k", "1m", "1b", including decimals
+        local number, suffix = Price:match("^(%d+%.?%d*)([kKmMbB]?)$")
         if number then
             number = tonumber(number)
             if suffix == "k" or suffix == "K" then
