@@ -22,18 +22,6 @@ Frame.BorderSizePixel = 0
 Frame.Active = true
 Frame.Draggable = true
 
--- === Заголовок ===
-local TitleLabel = Instance.new("TextLabel", Frame)
-TitleLabel.Text = "Sanya Seller"
-TitleLabel.Size = UDim2.new(1, 0, 0, 30)
-TitleLabel.Position = UDim2.new(0, 0, 0, 0)
-TitleLabel.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-TitleLabel.Font = Enum.Font.SourceSansBold
-TitleLabel.TextScaled = true
-TitleLabel.TextAlign = Enum.TextAlign.Center
-TitleLabel.TextYAlignment = Enum.TextYAlignment.Center
-
 -- ❌ Закрытие окна
 local CloseButton = Instance.new("TextButton", Frame)
 CloseButton.Text = "❌"
@@ -191,7 +179,7 @@ local function StartSelling()
                 end
             end
         end
-        task.wait(3)  -- Wait before checking again
+        task.wait(5)  -- Wait before checking again
     end
 end
 
